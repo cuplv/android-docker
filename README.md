@@ -56,3 +56,31 @@ apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2
 apt-get update
 apt-get install sbt
 ```
+
+# Docker commands
+
+general info 
+```
+docker info
+```
+
+list images
+```
+docker image ls
+```
+
+run an image
+```
+docker run [image name]
+```
+
+create an image from dockerfile
+```
+docker build -t [image name] .
+```
+
+stop a running container (container id comes from docker container ls)
+```
+docker container stop [container id]
+```
+
