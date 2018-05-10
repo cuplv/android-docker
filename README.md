@@ -84,3 +84,8 @@ stop a running container (container id comes from docker container ls)
 docker container stop [container id]
 ```
 
+run shell in docker container
+```
+docker exec -it my-app-container bash
+```
+
