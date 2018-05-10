@@ -89,3 +89,8 @@ run shell in docker container
 docker exec -it my-app-container bash
 ```
 
+remove all images
+```
+docker system prune -a
+```
+
