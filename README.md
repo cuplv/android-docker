@@ -34,8 +34,8 @@ docker exec -it container_hash bash
 ```
 # Download the emulator images in the container
 ```
-sdkmanager “platform-tools” “platforms;android-23” “emulator”
-sdkmanager “system-images;android-23;default;x86_64”
+sdkmanager "platform-tools" "platforms;android-23" "emulator"
+sdkmanager "system-images;android-23;default;x86_64"
 ```
 # Create emulator
 ```
