@@ -2,12 +2,30 @@
 Dockerfile and instructions for running docker instance with emulator.
 
 
-# Login to the Stack.cs
+
+# Build the docker image
+
+Build the `cuplv-android-emulator` image
+
+```cd emulator && docker build -t cuplv-android-emulator```
+
+
+# Run the container interactively
+
+```docker run -di -p 5037:5037 --name=cuplv-android-emulator cuplv-android-emulator```
+
+
+The container run an android emulator named "test"
+
+
+# Set up the emulator on Stack.cs
+
+- Login to the Stack.cs
 ```
 ssh centos@ip 
 ```
 
-# Install docker on Stack
+- Install docker on Stack
 ```
 sudo yum install -y yum-utils \
   device-mapper-persistent-data \
@@ -20,77 +38,11 @@ sudo yum-config-manager \
 sudo yum install docker-ce
 sudo systemctl start docker
 ```
-# pull the images
-docker pull thyrlian/android-sdk-vnc    
 
-# Create the container
+- pull the repository
+
 ```
-yum -y install wget
-wget https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
-yum -y install unzip
-unzip sdk-tools-linux-3859397.zip
-docker run -d --privileged -v /dev/kvm:/dev/kvm  -p 8080:5901 -p 2222:22 -p 5037:5037 -v <Android_SDK_PATH>:/opt/android-sdk thyrlian/android-sdk-vnc
-docker exec -it container_hash bash
-```
-# Download the emulator images in the container
-```
-sdkmanager "platform-tools" "platforms;android-23" "emulator"
-sdkmanager "system-images;android-23;default;x86_64"
-```
-# Create emulator
-```
-avdmanager create avd -n test -k "system-images;android-23;default;x86_64"
-```
-# Run emulator
-```
-emulator -avd test -noaudio -no-boot-anim -accel on -gpu off &
+git clone https://github.com/cuplv/android-docker
 ```
 
-# To install Scala and SBT
-``` 
-apt-get install  apt-transport-https
-curl https://bintray.com/sbt/rpm/rpm | sudo tee /etc/yum.repos.d/bintray-sbt-rpm.repo
-apt-get install scala
-echo "deb https://dl.bintray.com/sbt/debian /" |  tee -a /etc/apt/sources.list.d/sbt.list
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823
-apt-get update
-apt-get install sbt
-```
-
-# Docker commands
-
-general info 
-```
-docker info
-```
-
-list images
-```
-docker image ls
-```
-
-run an image
-```
-docker run [image name]
-```
-
-create an image from dockerfile
-```
-docker build -t [image name] .
-```
-
-stop a running container (container id comes from docker container ls)
-```
-docker container stop [container id]
-```
-
-run shell in docker container
-```
-docker exec -it my-app-container bash
-```
-
-remove all images
-```
-docker system prune -a
-```
-
+- Build the docker image and run the container
