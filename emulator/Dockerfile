@@ -6,9 +6,11 @@ RUN apt-get install wget
 RUN cd /opt/android-sdk/ && wget https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
 RUN cd /opt/android-sdk && echo "A" | unzip sdk-tools-linux-3859397.zip
 RUN sdkmanager "platform-tools" "platforms;android-23" "emulator"
-RUN sdkmanager "system-images;android-23;default;x86_64"
+#RUN sdkmanager "system-images;android-23;default;x86_64"
+#RUN echo "no" | avdmanager create avd -n test -k "system-images;android-23;default;x86_64"
 
-RUN echo "no" | avdmanager create avd -n test -k "system-images;android-23;default;x86_64"
+RUN sdkmanager "system-images;android-23;google_apis;armeabi-v7a"
+RUN echo "no" | avdmanager create avd -n test -g google_apis -k "system-images;android-23;google_apis;armeabi-v7a"
 
 RUN apt-get install -y apt-transport-https sudo curl software-properties-common
 
@@ -29,6 +31,7 @@ RUN sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E4
 RUN sudo apt-get update
 RUN sudo apt-get install -y sbt
 
+# Necessary for ARM emulator
+ENV QT_QPA_PLATFORM offscreen
+ENV LD_LIBRARY_PATH ${ANDROID_HOME}/tools/lib64:${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib
 
-RUN mkdir /app
-WORKDIR /app
