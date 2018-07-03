@@ -94,3 +94,5 @@ remove all images
 docker system prune -a
 ```
 
+# Clean up Docker Data
+https://lebkowski.name/docker-volumes/
