@@ -6,11 +6,11 @@ RUN apt-get install wget
 RUN cd /opt/android-sdk/ && wget https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
 RUN cd /opt/android-sdk && echo "A" | unzip sdk-tools-linux-3859397.zip
 RUN sdkmanager "platform-tools" "platforms;android-23" "emulator"
-#RUN sdkmanager "system-images;android-23;default;x86_64"
-#RUN echo "no" | avdmanager create avd -n test -k "system-images;android-23;default;x86_64"
+RUN sdkmanager "system-images;android-23;default;x86_64"
+RUN echo "no" | avdmanager create avd -n test -k "system-images;android-23;default;x86_64"
 
-RUN sdkmanager "system-images;android-23;google_apis;armeabi-v7a"
-RUN echo "no" | avdmanager create avd -n test -g google_apis -k "system-images;android-23;google_apis;armeabi-v7a"
+#RUN sdkmanager "system-images;android-23;google_apis;armeabi-v7a"
+#RUN echo "no" | avdmanager create avd -n test -g google_apis -k "system-images;android-23;google_apis;armeabi-v7a"
 
 RUN apt-get install -y apt-transport-https sudo curl software-properties-common
 
@@ -36,4 +36,4 @@ ENV QT_QPA_PLATFORM offscreen
 ENV LD_LIBRARY_PATH ${ANDROID_HOME}/tools/lib64:${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib
 
 #Run the emulator
-ENTRYPOINT ["emulator", "-avd", "test", "-noaudio", "-no-boot-anim", "-accel", "off", "-gpu", "off"]
+#ENTRYPOINT ["emulator", "-avd", "test", "-noaudio", "-no-boot-anim", "-accel", "off", "-gpu", "off"]
