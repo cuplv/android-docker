@@ -1,6 +1,9 @@
 # android-docker
 Dockerfile and instructions for running docker instance with emulator.
 
+The image adds to the thrillian emulator the android sdk, scala and java.
+
+The image starts 3 services: adb, ssh, vnc. Refer to [https://github.com/thyrlian/AndroidSDK](https://github.com/thyrlian/AndroidSDK) for more information.
 
 
 # Build the docker image
@@ -14,35 +17,13 @@ Build the `cuplv-android-emulator` image
 
 ```docker run -di -p 5037:5037 --name=cuplv-android-emulator cuplv-android-emulator```
 
+The container still does not run an emulator.
 
-The container run an android emulator named "test"
+To run an emulator on the running container:
+`docker exec -it <container id> /bin/bash`
 
+And then from inside the container:
+`emulator -avd test -noaudio -no-boot-anim -accel on -gpu off`
 
-# Set up the emulator on Stack.cs
+In your derived docker images you can add start the android emulator at startup time through supervisord (just add a configuration).
 
-- Login to the Stack.cs
-```
-ssh centos@ip 
-```
-
-- Install docker on Stack
-```
-sudo yum install -y yum-utils \
-  device-mapper-persistent-data \
-  lvm2
-
-sudo yum-config-manager \
-    --add-repo \
-    https://download.docker.com/linux/centos/docker-ce.repo
-
-sudo yum install docker-ce
-sudo systemctl start docker
-```
-
-- pull the repository
-
-```
-git clone https://github.com/cuplv/android-docker
-```
-
-- Build the docker image and run the container
