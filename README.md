@@ -13,11 +13,11 @@ Build the `cuplv-android-emulator` image
 ```cd emulator && docker build -t cuplv-android-emulator```
 
 
-# Run the container interactively
+# Run the container
 
-```docker run -di -p 5037:5037 --name=cuplv-android-emulator cuplv-android-emulator```
+```docker run -di -p 5037:5037 -p 2222:22 -p 5901:5901 --name=cuplv-android-emulator cuplv-android-emulator```
 
-The container still does not run an emulator.
+The container still does not run an emulator (it exposes adb on port 5037, ssh on port 2222, and vnc on port 5901)
 
 To run an emulator on the running container:
 `docker exec -it <container id> /bin/bash`
