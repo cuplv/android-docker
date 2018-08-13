@@ -1,98 +1,31 @@
 # android-docker
 Dockerfile and instructions for running docker instance with emulator.
 
+The image adds to the thrillian emulator the android sdk, scala and java.
 
-# Login to the Stack.cs
-```
-ssh centos@ip 
-```
+The image starts 3 services: adb, ssh, vnc. Refer to [https://github.com/thyrlian/AndroidSDK](https://github.com/thyrlian/AndroidSDK) for more information.
 
-# Install docker on Stack
-```
-sudo yum install -y yum-utils \
-  device-mapper-persistent-data \
-  lvm2
 
-sudo yum-config-manager \
-    --add-repo \
-    https://download.docker.com/linux/centos/docker-ce.repo
+# Build the docker image
 
-sudo yum install docker-ce
-sudo systemctl start docker
-```
-# pull the images
-docker pull thyrlian/android-sdk-vnc    
+Build the `cuplv-android-emulator` image
 
-# Create the container
-```
-yum -y install wget
-wget https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
-yum -y install unzip
-unzip sdk-tools-linux-3859397.zip
-docker run -d --privileged -v /dev/kvm:/dev/kvm  -p 8080:5901 -p 2222:22 -p 5037:5037 -v <Android_SDK_PATH>:/opt/android-sdk thyrlian/android-sdk-vnc
-docker exec -it container_hash bash
-```
-# Download the emulator images in the container
-```
-sdkmanager "platform-tools" "platforms;android-23" "emulator"
-sdkmanager "system-images;android-23;default;x86_64"
-```
-# Create emulator
-```
-avdmanager create avd -n test -k "system-images;android-23;default;x86_64"
-```
-# Run emulator
-```
-emulator -avd test -noaudio -no-boot-anim -accel on -gpu off &
-```
+```cd emulator && docker build -t cuplv-android-emulator```
 
-# To install Scala and SBT
-``` 
-apt-get install  apt-transport-https
-curl https://bintray.com/sbt/rpm/rpm | sudo tee /etc/yum.repos.d/bintray-sbt-rpm.repo
-apt-get install scala
-echo "deb https://dl.bintray.com/sbt/debian /" |  tee -a /etc/apt/sources.list.d/sbt.list
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823
-apt-get update
-apt-get install sbt
-```
 
-# Docker commands
+# Run the container
 
-general info 
-```
-docker info
-```
+```docker run -di -p 5037:5037 -p 2222:22 -p 5901:5901 --name=cuplv-android-emulator cuplv-android-emulator```
 
-list images
-```
-docker image ls
-```
+The container still does not run an emulator (it exposes adb on port 5037, ssh on port 2222, and vnc on port 5901)
 
-run an image
-```
-docker run [image name]
-```
+To run an emulator on the running container:
+`docker exec -it <container id> /bin/bash`
 
-create an image from dockerfile
-```
-docker build -t [image name] .
-```
+And then from inside the container:
+`emulator -avd test -noaudio -no-boot-anim -accel on -gpu off`
 
-stop a running container (container id comes from docker container ls)
-```
-docker container stop [container id]
-```
-
-run shell in docker container
-```
-docker exec -it my-app-container bash
-```
-
-remove all images
-```
-docker system prune -a
-```
+In your derived docker images you can add start the android emulator at startup time through supervisord (just add a configuration).
 
 # Clean up Docker Data
 https://lebkowski.name/docker-volumes/
