@@ -15,7 +15,7 @@ Build the `cuplv-android-emulator` image
 
 # Run the container
 
-```docker run -di -p 5037:5037 -p 2222:22 -p 5901:5901 --name=cuplv-android-emulator cuplv-android-emulator```
+```docker run -di --privileged-p 5037:5037 -p 2222:22 -p 5901:5901 --name=cuplv-android-emulator cuplv-android-emulator```
 
 The container still does not run an emulator (it exposes adb on port 5037, ssh on port 2222, and vnc on port 5901)
 
