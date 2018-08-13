@@ -35,5 +35,7 @@ RUN sudo apt-get install -y sbt
 ENV QT_QPA_PLATFORM offscreen
 ENV LD_LIBRARY_PATH ${ANDROID_HOME}/tools/lib64:${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib
 
-#Run the emulator
-#ENTRYPOINT ["emulator", "-avd", "test", "-noaudio", "-no-boot-anim", "-accel", "off", "-gpu", "off"]
+# Start supervisord
+# In the configuration added from the thyrlian/android-sdk-vnc image
+# it starts ssh, adb, and vnc
+CMD ["/usr/bin/supervisord"]
